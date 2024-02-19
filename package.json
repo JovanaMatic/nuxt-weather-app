@@ -10,7 +10,12 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@tailwindcss/aspect-ratio": "^0.4.2",
+    "@tailwindcss/forms": "^0.5.7",
+    "@tailwindcss/line-clamp": "^0.4.4",
+    "@tailwindcss/typography": "^0.5.10",
     "nuxt": "^3.10.2",
+    "tailwindcss": "^3.4.1",
     "vue": "^3.4.19",
     "vue-router": "^4.2.5"
   }
