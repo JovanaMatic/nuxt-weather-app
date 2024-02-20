@@ -1,14 +1,22 @@
 <script setup>
-  const citySearch = ref('Belgrade')
+  const cookie = useCookie("city")
+  const citySearch = ref(cookie.value)
+  if (!cookie.value) {
+    citySearch.value = 'Belgrade'
+  }
   const inputValue = ref('')
   const background = ref('')
   // const { data: city, error } = useFetch(() => `http://api.weatherapi.com/v1/current.json?key=96191023498a4f13b4f122145241902&q=${citySearch.value}&aqi=no`)
 
 
   const { data: city, error } = useAsyncData('city', async () => {
-    const response = await $fetch(`http://api.weatherapi.com/v1/current.json?key=96191023498a4f13b4f122145241902&q=${citySearch.value}&aqi=no`)
 
-    const temp = response.current.temp_c
+    let response
+    
+    try {
+      response = await $fetch(`http://api.weatherapi.com/v1/current.json?key=96191023498a4f13b4f122145241902&q=${citySearch.value}&aqi=no`)
+      cookie.value = citySearch.value
+      const temp = response.current.temp_c
 
     if (temp <= -10) {
         background.value =
@@ -23,7 +31,9 @@
         background.value =
           "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3546&q=80";
       }
-    
+    } catch (error) {
+      console.log('Invalid city')
+    }
     return response
   }, {
     watch: [citySearch]
